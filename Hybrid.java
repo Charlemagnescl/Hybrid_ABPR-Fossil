@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -46,6 +48,22 @@ public class Hybrid{
     public static HashMap<Integer, ArrayList<Integer>> ABPR_list = new HashMap<>();
 
 
+    public static void main(String[] args) throws Exception{
+
+        // ===
+        readConfigurations(args);
+
+        // =========================================================
+        // === some statistics
+        itemRatingNumTrain = new int[m+1];
+        userRatingNumTrain = new int[n+1];
+        // ===
+        readData();
+
+        // ===
+        testRanking(TestData);
+    }
+
 
 
     // =========================================
@@ -60,6 +78,19 @@ public class Hybrid{
             else if (args[k].equals("-fnABPRResult")) fnABPRResult = args[++k];
             else if (args[k].equals("-fnFossilResult")) fnFossilResult = args[++k];
         }
+
+        // === Print the configurations
+        System.out.println(Arrays.toString(args));
+
+        System.out.println("fnTrainData: " + fnTrainData);
+        System.out.println("fnTestData: " + fnTestData);
+        System.out.println("fnABPRResult: " + fnABPRResult);
+        System.out.println("fnFossilResult: " + fnFossilResult);
+        System.out.println("n: " + Integer.toString(n));
+        System.out.println("m: " + Integer.toString(m));
+
+
+        System.out.println("topK: " + Integer.toString(topK));
     }
 
 
@@ -149,13 +180,15 @@ public class Hybrid{
         // =========================================================
         // === read Fossil result list
         // === data format: userid itemNum item_1 item_2 ... item_itemNum
-        br = new BufferedReader(new FileReader(fnFossilResult));
+        br = new BufferedReader(new InputStreamReader( new FileInputStream( fnFossilResult ) , "UTF-16"));
         line = null;
         boolean flag = false;
         while ((line = br.readLine())!=null)
         {
-            if(line.startsWith("--- begin"))
+            if(line.startsWith("--- begin")){
                 flag = true;
+                continue;
+            }
             if(line.startsWith("--- end"))
                 flag = false;
             
@@ -171,6 +204,9 @@ public class Hybrid{
                 tmp_ItemList.add(Integer.parseInt(terms[1+i]));
             }
             Fossil_list.put(userID, tmp_ItemList);
+
+            // =============== Debug ====================
+            //System.out.println("user:" + userID + " list_size:" + tmp_ItemList.size());
         }
         br.close();
         // =========================================================
@@ -178,17 +214,25 @@ public class Hybrid{
         // =========================================================
         // === read ABPR result list
         // === data format: userid itemNum item_1 item_2 ... item_itemNum
-        br = new BufferedReader(new FileReader(fnABPRResult));
+        br = new BufferedReader(new InputStreamReader( new FileInputStream( fnABPRResult ) , "UTF-16"));
         line = null;
+        flag = false;
         while ((line = br.readLine())!=null)
         {
-            if(line.startsWith("--- begin"))
+            if(line.startsWith("--- begin")){
                 flag = true;
+                
+                
+                continue;
+            }
             if(line.startsWith("--- end"))
                 flag = false;
             
-            if(!flag)
+            if(!flag){
+                // ========= Debug ==============
+                //System.out.println(line);
                 continue;
+            }
 
             String[] terms = line.split(" ");
             int userID = Integer.parseInt(terms[0]);
@@ -196,9 +240,12 @@ public class Hybrid{
 
             ArrayList<Integer> tmp_ItemList = new ArrayList<>();
             for(int i=0; i<len; ++i){
-                tmp_ItemList.add(Integer.parseInt(terms[1+i]));
+                tmp_ItemList.add(Integer.parseInt(terms[2+i]));
             }
             ABPR_list.put(userID, tmp_ItemList);
+
+            // =============== Debug ====================
+            //System.out.println("user:" + userID + " list_size:" + tmp_ItemList.size() + " First-item:" + tmp_ItemList.get(0));
         }
         br.close();
         // =========================================================
@@ -214,9 +261,6 @@ public class Hybrid{
         float[] F1Sum = new float[topK+1];
         float[] NDCGSum = new float[topK+1];
         float[] OneCallSum = new float[topK+1];
-
-        // Record the topkResult of each user
-        int[][] eachU_topKResult = new int[n+1][topK+1];
 
         // === calculate the best DCG, which can be used later
         float[] DCGbest = new float[topK+1];
@@ -261,7 +305,7 @@ public class Hybrid{
             {
                 public int compare( Entry<Integer, Float> o1, Entry<Integer, Float> o2 )
                 {
-                    return o2.getValue().compareTo( o1.getValue() );
+                    return o1.getValue().compareTo( o2.getValue() );
                 }
             });
 
@@ -280,6 +324,14 @@ public class Hybrid{
                 TopKResult[k] = itemID;
                 k++;
             }
+
+            // ================== Debug ======================
+            System.out.print("user:" + u + " ");
+            for(int i=1; i<=topK; ++i){
+                System.out.print(TopKResult[i] + " ");
+            }
+            System.out.println();
+            // ================== Debug ======================
 
 
             // === TopK evaluation
@@ -320,7 +372,44 @@ public class Hybrid{
                 // ===
                 OneCallSum[k] += HitSum>0 ? 1:0;
             }
+
         }
+
+        // =========================================================
+        // === the number of users in the test data
+        System.out.println( "The number of users in the test data: " + Integer.toString(UserNum_TestData) );
+
+        // === precision@k
+        for(int k=1; k<=topK; k++)
+        {
+            float prec = PrecisionSum[k]/UserNum_TestData;
+            System.out.println("Prec@"+Integer.toString(k)+":"+Float.toString(prec));
+        }
+        // === recall@k
+        for(int k=1; k<=topK; k++)
+        {
+            float rec = RecallSum[k]/UserNum_TestData;
+            System.out.println("Rec@"+Integer.toString(k)+":"+Float.toString(rec));
+        }
+        // === F1@k
+        for(int k=1; k<=topK; k++)
+        {
+            float F1 = F1Sum[k]/UserNum_TestData;
+            System.out.println("F1@"+Integer.toString(k)+":"+Float.toString(F1));
+        }
+        // === NDCG@k
+        for(int k=1; k<=topK; k++)
+        {
+            float NDCG = NDCGSum[k]/UserNum_TestData;
+            System.out.println("NDCG@"+Integer.toString(k)+":"+Float.toString(NDCG));
+        }
+        // === 1-call@k
+        for(int k=1; k<=topK; k++)
+        {
+            float OneCall = OneCallSum[k]/UserNum_TestData;
+            System.out.println("1-call@"+Integer.toString(k)+":"+Float.toString(OneCall));
+        }
+        
     }
 
 
@@ -329,11 +418,11 @@ public class Hybrid{
             if( !itemSetWhole.contains(i) || itemSet_u_TrainData.contains(i))
                 continue;
             
-                // === predictions
-                int id_fossil = Fossil_list.get(u).indexOf(i);
-                int id_abpr = ABPR_list.get(u).indexOf(i);
-                float pred = (id_fossil == -1 ? (m/2.0f) : (id_fossil * 1.0f) ) + (id_abpr == -1 ? (m/2.0f) : (id_abpr * 1.0f) );
-                item2Prediction.put(i, pred);
+            // === predictions
+            int id_fossil = Fossil_list.get(u).indexOf(i);
+            int id_abpr = ABPR_list.get(u).indexOf(i);
+            float pred = (id_fossil == -1 ? (m/2.0f) : (id_fossil + 1.0f) ) + (id_abpr == -1 ? (m/2.0f) : (id_abpr + 1.0f) );
+            item2Prediction.put(i, pred);
         }
     }
 }
