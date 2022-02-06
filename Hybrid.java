@@ -23,6 +23,9 @@ public class Hybrid{
 
     // === evaluation
     public static int topK; 
+
+    // === tradeoff
+    public static float tradeoff;
     
     // =============================================================
     // === training data
@@ -77,6 +80,7 @@ public class Hybrid{
             else if (args[k].equals("-fnTrainData")) fnTrainData = args[++k];
             else if (args[k].equals("-fnABPRResult")) fnABPRResult = args[++k];
             else if (args[k].equals("-fnFossilResult")) fnFossilResult = args[++k];
+            else if (args[k].equals("-tradeoff")) tradeoff = Float.parseFloat(args[++k]);
         }
 
         // === Print the configurations
@@ -421,7 +425,7 @@ public class Hybrid{
             // === predictions
             int id_fossil = Fossil_list.get(u).indexOf(i);
             int id_abpr = ABPR_list.get(u).indexOf(i);
-            float pred = (id_fossil == -1 ? (m/2.0f) : (id_fossil + 1.0f) ) + (id_abpr == -1 ? (m/2.0f) : (id_abpr + 1.0f) );
+            float pred = tradeoff * (id_fossil == -1 ? (m/2.0f) : (id_fossil + 1.0f) ) + (1.0f - tradeoff) * (id_abpr == -1 ? (m/2.0f) : (id_abpr + 1.0f) );
             item2Prediction.put(i, pred);
         }
     }
