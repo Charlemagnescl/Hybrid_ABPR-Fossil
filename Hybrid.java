@@ -205,7 +205,7 @@ public class Hybrid{
 
             ArrayList<Integer> tmp_ItemList = new ArrayList<>();
             for(int i=0; i<len; ++i){
-                tmp_ItemList.add(Integer.parseInt(terms[1+i]));
+                tmp_ItemList.add(Integer.parseInt(terms[2+i]));
             }
             Fossil_list.put(userID, tmp_ItemList);
 
