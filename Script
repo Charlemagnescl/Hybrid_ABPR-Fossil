@@ -1,3 +1,3 @@
 java Hybrid -n 943 -m 1349 -topK 20 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil.txt -fnABPRResult ./result-list/ABPR.txt > firstTest.txt
 
-java Hybrid -n 943 -m 1349 -topK 20 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil20.txt -fnABPRResult ./result-list/ABPR20.txt > 20Items.txt
+java Hybrid -n 943 -m 1349 -topK 20 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil20.txt -fnABPRResult ./result-list/ABPR20.txt > ./result/20Items.txt
