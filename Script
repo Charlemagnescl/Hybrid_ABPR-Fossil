@@ -1,3 +1,29 @@
 java Hybrid -n 943 -m 1349 -topK 20 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil.txt -fnABPRResult ./result-list/ABPR.txt > firstTest.txt
 
 java Hybrid -n 943 -m 1349 -topK 20 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil20.txt -fnABPRResult ./result-list/ABPR20.txt > ./result/20Items.txt
+
+[with tradeoffs]
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 1.0 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil3.txt -fnABPRResult ./result-list/ABPR3.txt > ./result/tradeoff1_3.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.9 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil3.txt -fnABPRResult ./result-list/ABPR1.txt > ./result/tradeoff0_9_31.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.85 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil1.txt -fnABPRResult ./result-list/ABPR2.txt > ./result/tradeoff0_85_12.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.8 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil3.txt -fnABPRResult ./result-list/ABPR3.txt > ./result/tradeoff0_8_33.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.75 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil.txt -fnABPRResult ./result-list/ABPR.txt > ./result/tradeoff0_75.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.7 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil2.txt -fnABPRResult ./result-list/ABPR1.txt > ./result/tradeoff0_7_21.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.6 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil3.txt -fnABPRResult ./result-list/ABPR1.txt > ./result/tradeoff0_6_31.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.55 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil1.txt -fnABPRResult ./result-list/ABPR1.txt > ./result/tradeoff0_55_11.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.5 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil3.txt -fnABPRResult ./result-list/ABPR2.txt > ./result/tradeoff0_5_32.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.4 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil3.txt -fnABPRResult ./result-list/ABPR3.txt > ./result/tradeoff0_4_33.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.2 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil3.txt -fnABPRResult ./result-list/ABPR3.txt > ./result/tradeoff0_2_33.txt
+
+java Hybrid -n 943 -m 1349 -topK 20 -tradeoff 0.0 -fnTrainData ./ml-100k/train_5.csv -fnTestData ./ml-100k/test_5.csv -fnFossilResult ./result-list/Fossil3.txt -fnABPRResult ./result-list/ABPR3.txt > ./result/tradeoff0_0_3.txt

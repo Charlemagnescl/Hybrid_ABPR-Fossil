@@ -1,0 +1,5 @@
+# This is configuration of how scripts to be run
+# 
+Max_threads: 8
+dnScripts: './testScripts/'
+runnable_file_suffix: '.bat'

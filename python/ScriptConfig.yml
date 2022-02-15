@@ -1,0 +1,29 @@
+---
+# this is configurations of script generation
+# name, runCmd is required and its' key name should not be change.
+name: "Hybrid"
+runCmd: "java Hybrid"
+fnTestData: "./ml-100k/test_5.csv"
+fnTrainData: "./ml-100k/train_5.csv"
+fnABPRResult: 
+    - "./result-list/ml-100k/ABPR/1.txt"
+    - "./result-list/ml-100k/ABPR/2.txt"
+    - "./result-list/ml-100k/ABPR/3.txt"
+fnFossilResult: 
+    - "./result-list/ml-100k/ABPR/1.txt"
+    - "./result-list/ml-100k/ABPR/2.txt"
+    - "./result-list/ml-100k/ABPR/3.txt"
+n: 943
+m: 1349
+topK: 20
+tradeoff: 
+    - 0.0
+    - 0.2
+    - 0.4
+    - 0.5
+    - 0.6
+    - 0.7
+    - 0.8
+    - 0.85
+    - 0.9
+    - 1.0

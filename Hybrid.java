@@ -14,6 +14,7 @@ public class Hybrid{
     public static int n; // user number
     public static int m; // item number
     public static int num_train = 0; // number of the total (user, item) pairs in training data
+    public static int numItemTaken = 20;
 
     // === input data file
     public static String fnTestData = "";
@@ -76,11 +77,13 @@ public class Hybrid{
             if (args[k].equals("-n")) n = Integer.parseInt(args[++k]);
             else if (args[k].equals("-m")) m = Integer.parseInt(args[++k]);
             else if (args[k].equals("-topK")) topK = Integer.parseInt(args[++k]);
+            else if (args[k].equals("-numItemTaken")) numItemTaken = Integer.parseInt(args[++k]);
             else if (args[k].equals("-fnTestData")) fnTestData = args[++k];
             else if (args[k].equals("-fnTrainData")) fnTrainData = args[++k];
             else if (args[k].equals("-fnABPRResult")) fnABPRResult = args[++k];
             else if (args[k].equals("-fnFossilResult")) fnFossilResult = args[++k];
             else if (args[k].equals("-tradeoff")) tradeoff = Float.parseFloat(args[++k]);
+
         }
 
         // === Print the configurations
@@ -95,6 +98,11 @@ public class Hybrid{
 
 
         System.out.println("topK: " + Integer.toString(topK));
+        System.out.println("numItemTaken: " + Integer.toString(numItemTaken));
+
+        if(numItemTaken < 0){
+            numItemTaken = Integer.MAX_VALUE;
+        }
     }
 
 
@@ -201,7 +209,7 @@ public class Hybrid{
 
             String[] terms = line.split(" ");
             int userID = Integer.parseInt(terms[0]);
-            int len = Integer.parseInt(terms[1]);
+            int len = Math.min(Integer.parseInt(terms[1]), numItemTaken);
 
             ArrayList<Integer> tmp_ItemList = new ArrayList<>();
             for(int i=0; i<len; ++i){
@@ -240,7 +248,7 @@ public class Hybrid{
 
             String[] terms = line.split(" ");
             int userID = Integer.parseInt(terms[0]);
-            int len = Integer.parseInt(terms[1]);
+            int len = Math.min(Integer.parseInt(terms[1]), numItemTaken);
 
             ArrayList<Integer> tmp_ItemList = new ArrayList<>();
             for(int i=0; i<len; ++i){

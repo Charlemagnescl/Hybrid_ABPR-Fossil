@@ -1,0 +1,1 @@
+java Hybrid -fnTestData ./ml-100k/test_5.csv -fnTrainData ./ml-100k/train_5.csv -fnABPRResult ./result-list/ml-100k/ABPR/1.txt -fnFossilResult ./result-list/ml-100k/Fossil/3.txt -n 943 -m 1349 -topK 20 -tradeoff 0.7 > ./results/Hybrid_fnTestData_test_5_fnTrainData_train_5_fnABPRResult_1_fnFossilResult_3_n_943_m_1349_topK_20_tradeoff_0_7.txt
